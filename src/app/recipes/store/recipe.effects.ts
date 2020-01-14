@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { switchMap, map } from 'rxjs/operators';
 
-import * as RecipeActions from './recipe.actions';
+import * as RecipesActions from './recipe.actions';
 import { Recipe } from '../recipe.model';
 
 @Injectable()
 export class RecipeEffects {
   @Effect()
   fetchRecipes = this.actions$.pipe(
-    ofType(RecipeActions.FETCH_RECIPES),
+    ofType(RecipesActions.FETCH_RECIPES),
     switchMap(() => {
       return this.http
       .get<Recipe[]>(
@@ -26,7 +26,7 @@ export class RecipeEffects {
       });
     }),
     map(recipes => {
-      return new RecipeActions.SetRecipes(recipes);
+      return new RecipesActions.SetRecipes(recipes);
     })
   );
 
