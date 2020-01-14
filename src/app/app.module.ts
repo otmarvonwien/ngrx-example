@@ -29,7 +29,6 @@ import { RecipeEffects } from './recipes/store/recipe.effects';
     SharedModule,
     CoreModule
   ],
-  bootstrap: [AppComponent],
-  // providers: [LoggingService]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
