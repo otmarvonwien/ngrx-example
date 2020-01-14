@@ -138,7 +138,7 @@ export class AuthEffects {
         _tokenExpirationDate: string;
       } = JSON.parse(localStorage.getItem('userData'));
       if (!userData) {
-        return { type: 'DUMMY' };
+        return { type: '[Auth] Auto Login not successful' };
       }
 
       const loadedUser = new User(
@@ -149,7 +149,6 @@ export class AuthEffects {
       );
 
       if (loadedUser.token) {
-        // this.user.next(loadedUser);
         const expirationDuration =
           new Date(userData._tokenExpirationDate).getTime() -
           new Date().getTime();
@@ -160,13 +159,9 @@ export class AuthEffects {
           loadedUser.token,
           expirationDate: new Date(userData._tokenExpirationDate)
         });
-        // const expirationDuration =
-        //   new Date(userData._tokenExpirationDate).getTime() -
-        //   new Date().getTime();
-        // this.autoLogout(expirationDuration);
       }
 
-      return { type: 'DUMMY' };
+      return { type: '[Auth] Auto Login not successful' };
     })
   );
 
