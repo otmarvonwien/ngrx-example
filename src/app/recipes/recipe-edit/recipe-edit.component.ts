@@ -46,13 +46,15 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     //   this.recipeForm.value['ingredients']);
     if (this.editMode) {
       this.store.dispatch(
-        new RecipesActions.UpdateRecipe({
+        RecipesActions.updateRecipe({
           index: this.id,
-          newRecipe: this.recipeForm.value
+          recipe: this.recipeForm.value
         })
       );
     } else {
-      this.store.dispatch(new RecipesActions.AddRecipe(this.recipeForm.value));
+      this.store.dispatch(
+        RecipesActions.addRecipe({ recipe: this.recipeForm.value })
+      );
     }
     this.onCancel();
   }
@@ -96,26 +98,27 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
           map(recipeState => {
             return recipeState.recipes.find((recipe, index) => {
               return index === this.id;
-          });
-        })
-      ).subscribe(recipe => {
-        recipeName = recipe.name;
-        recipeImagePath = recipe.imagePath;
-        recipeDescription = recipe.description;
-        if (recipe['ingredients']) {
-          for (let ingredient of recipe.ingredients) {
-            recipeIngredients.push(
-              new FormGroup({
-                name: new FormControl(ingredient.name, Validators.required),
-                amount: new FormControl(ingredient.amount, [
-                  Validators.required,
-                  Validators.pattern(/^[1-9]+[0-9]*$/)
-                ])
-              })
-            );
+            });
+          })
+        )
+        .subscribe(recipe => {
+          recipeName = recipe.name;
+          recipeImagePath = recipe.imagePath;
+          recipeDescription = recipe.description;
+          if (recipe['ingredients']) {
+            for (let ingredient of recipe.ingredients) {
+              recipeIngredients.push(
+                new FormGroup({
+                  name: new FormControl(ingredient.name, Validators.required),
+                  amount: new FormControl(ingredient.amount, [
+                    Validators.required,
+                    Validators.pattern(/^[1-9]+[0-9]*$/)
+                  ])
+                })
+              );
+            }
           }
-        }
-      });
+        });
     }
 
     this.recipeForm = new FormGroup({
